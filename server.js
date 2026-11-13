@@ -92,6 +92,10 @@ const app = express();
 app.use(express.json({ limit: "40mb" }));
 app.use(express.static(path.join(here, "public")));
 
+// The AI photo analysis is optional: the app's free checks run entirely in the browser.
+const aiEnabled = Boolean(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN);
+app.get("/api/config", (req, res) => res.json({ ai: aiEnabled }));
+
 app.post("/api/analyze", async (req, res) => {
   if (rateLimited(req.ip)) {
     return res.status(429).json({ error: "Too many scans from this device. Try again later." });

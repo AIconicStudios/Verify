@@ -18,7 +18,7 @@
   <main>
     <!-- Home -->
     <section id="home" class="screen">
-      <p class="lede">Photograph a bag, shoe, garment or watch and get an authenticity assessment in under a minute.</p>
+      <p class="lede">Scan the codes on a bag, shoe, garment or watch and check its details for signs of a fake. Free, on your phone.</p>
       <button id="start" class="primary">Scan an item</button>
       <h2>Past scans</h2>
       <ul id="history" class="history"></ul>
@@ -29,13 +29,76 @@
     <section id="setup" class="screen" hidden>
       <h2>What are you checking?</h2>
       <div id="categories" class="chips" role="radiogroup" aria-label="Category"></div>
-      <label class="field">Brand <span class="muted">(optional)</span>
-        <input id="brand" type="text" maxlength="80" placeholder="e.g. Gucci" autocomplete="off">
+      <label class="field">Brand
+        <input id="brand" type="text" maxlength="80" placeholder="e.g. Gucci" autocomplete="off" list="brand-list">
+        <datalist id="brand-list"></datalist>
       </label>
-      <label class="field">Notes <span class="muted">(optional)</span>
-        <textarea id="notes" rows="2" maxlength="500" placeholder="Where it was bought, price, what the seller claims…"></textarea>
-      </label>
-      <button id="to-capture" class="primary">Open camera</button>
+      <button id="to-check" class="primary">Start checking</button>
+      <div id="ai-option" hidden>
+        <label class="field">Notes for the AI <span class="muted">(optional)</span>
+          <textarea id="notes" rows="2" maxlength="500" placeholder="Where it was bought, price, what the seller claims…"></textarea>
+        </label>
+        <button id="to-capture" class="ghost wide">Or use AI photo analysis</button>
+      </div>
+    </section>
+
+    <!-- Free check hub -->
+    <section id="check" class="screen" hidden>
+      <p class="muted" id="check-intro"></p>
+      <ol class="steps">
+        <li>
+          <button id="step-code" class="step">
+            <b>Scan a QR code or barcode</b>
+            <span id="step-code-status">On the item's label, tag or box</span>
+          </button>
+        </li>
+        <li>
+          <button id="step-serial" class="step">
+            <b id="step-serial-title">Read the serial number</b>
+            <span id="step-serial-status"></span>
+          </button>
+        </li>
+        <li>
+          <button id="step-inspect" class="step">
+            <b>Inspect the details</b>
+            <span id="step-inspect-status"></span>
+          </button>
+        </li>
+      </ol>
+      <button id="finish" class="primary" disabled>See result</button>
+      <p class="muted small">Do as many steps as the item allows. Everything runs on this phone: free, private and unlimited.</p>
+    </section>
+
+    <!-- Scanner: QR / barcode, or serial text -->
+    <section id="scan" class="screen" hidden>
+      <div class="viewfinder">
+        <video id="scan-video" playsinline muted></video>
+        <p id="scan-error" class="cam-error" hidden></p>
+        <div class="guide">
+          <strong id="scan-title"></strong>
+          <span id="scan-tip"></span>
+        </div>
+      </div>
+      <div class="controls">
+        <label class="ghost upload">Upload
+          <input id="scan-file" type="file" accept="image/*" hidden>
+        </label>
+        <button id="scan-shutter" class="shutter" aria-label="Read text"></button>
+        <span class="spacer"></span>
+      </div>
+      <p id="scan-status" class="muted small" role="status"></p>
+      <form id="serial-form" class="field">
+        <label for="serial-input" id="serial-label">Code</label>
+        <input id="serial-input" type="text" maxlength="120" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Or type it exactly">
+        <button class="primary" id="serial-use" disabled>Check this code</button>
+      </form>
+    </section>
+
+    <!-- Inspection checklist -->
+    <section id="inspect" class="screen" hidden>
+      <p class="muted">Look closely at the item, zooming in with your camera if it helps, and answer each point honestly.</p>
+      <ul id="checklist" class="list"></ul>
+      <button id="inspect-done" class="primary">Done</button>
     </section>
 
     <!-- Capture -->
@@ -71,7 +134,7 @@
     <!-- Result -->
     <section id="result" class="screen" hidden>
       <div id="result-body"></div>
-      <p class="disclaimer">This is an AI assessment from photos, not a certificate of authenticity. High-quality counterfeits can pass visual checks. For an expensive purchase, confirm with the brand or a professional authenticator.</p>
+      <p class="disclaimer">This is a screening, not a certificate of authenticity. High-quality counterfeits can copy real codes and pass visual checks. For an expensive purchase, confirm with the brand or a professional authenticator.</p>
       <button id="again" class="primary">Scan another item</button>
     </section>
   </main>
