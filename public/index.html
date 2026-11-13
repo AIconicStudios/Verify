@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e0d0b">
+  <title>Verify</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="bar">
+    <button id="back" class="icon-btn" aria-label="Back" hidden>←</button>
+    <h1>Verify</h1>
+  </header>
+
+  <main>
+    <!-- Home -->
+    <section id="home" class="screen">
+      <p class="lede">Photograph a bag, shoe, garment or watch and get an authenticity assessment in under a minute.</p>
+      <button id="start" class="primary">Scan an item</button>
+      <h2>Past scans</h2>
+      <ul id="history" class="history"></ul>
+      <p id="history-empty" class="muted">Nothing scanned yet.</p>
+    </section>
+
+    <!-- Setup -->
+    <section id="setup" class="screen" hidden>
+      <h2>What are you checking?</h2>
+      <div id="categories" class="chips" role="radiogroup" aria-label="Category"></div>
+      <label class="field">Brand <span class="muted">(optional)</span>
+        <input id="brand" type="text" maxlength="80" placeholder="e.g. Gucci" autocomplete="off">
+      </label>
+      <label class="field">Notes <span class="muted">(optional)</span>
+        <textarea id="notes" rows="2" maxlength="500" placeholder="Where it was bought, price, what the seller claims…"></textarea>
+      </label>
+      <button id="to-capture" class="primary">Open camera</button>
+    </section>
+
+    <!-- Capture -->
+    <section id="capture" class="screen" hidden>
+      <div class="viewfinder">
+        <video id="video" playsinline muted></video>
+        <p id="cam-error" class="cam-error" hidden></p>
+        <div class="guide">
+          <span id="shot-count"></span>
+          <strong id="shot-label"></strong>
+          <span id="shot-tip"></span>
+        </div>
+      </div>
+      <div class="controls">
+        <label class="ghost upload">Upload
+          <input id="file" type="file" accept="image/*" multiple hidden>
+        </label>
+        <button id="shutter" class="shutter" aria-label="Take photo"></button>
+        <button id="skip" class="ghost">Skip</button>
+      </div>
+      <ul id="thumbs" class="thumbs"></ul>
+      <button id="analyze" class="primary" disabled>Analyze</button>
+      <p class="muted small">More close-ups mean a more reliable result. Logos, stitching, hardware and serial tags matter most.</p>
+    </section>
+
+    <!-- Analyzing -->
+    <section id="loading" class="screen center" hidden>
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Examining your photos…</p>
+      <p class="muted small">This usually takes 20–60 seconds.</p>
+    </section>
+
+    <!-- Result -->
+    <section id="result" class="screen" hidden>
+      <div id="result-body"></div>
+      <p class="disclaimer">This is an AI assessment from photos, not a certificate of authenticity. High-quality counterfeits can pass visual checks. For an expensive purchase, confirm with the brand or a professional authenticator.</p>
+      <button id="again" class="primary">Scan another item</button>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="alert" hidden></div>
+  <script src="app.js" type="module"></script>
+</body>
+</html>
