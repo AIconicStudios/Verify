@@ -97,6 +97,10 @@ function show(screen) {
   if (CAMERAS[screen]) startCamera();
   if (screen === "home") renderHistory();
   if (screen === "check") renderHub();
+  // Keep one browser-history entry while away from home, so the phone's back
+  // button steps back through the app instead of closing it.
+  if (screen !== "home" && !history.state?.inApp) history.pushState({ inApp: true }, "");
+  if (screen === "home" && history.state?.inApp) history.back();
   window.scrollTo(0, 0);
 }
 
@@ -612,6 +616,10 @@ $("file").onchange = async (event) => {
   }
   event.target.value = "";
 };
+
+window.addEventListener("popstate", () => {
+  if (state.screen !== "home") show(BACK[state.screen] || "home");
+});
 
 // Release the camera when the app is backgrounded; reopen when it returns.
 document.addEventListener("visibilitychange", () => {
